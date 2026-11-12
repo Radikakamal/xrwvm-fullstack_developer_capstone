@@ -1,65 +1,42 @@
-.register_container{
-  display: flex;
-  flex-direction: column;
-  margin: auto;
-  margin-top: 2%;
-  background-color: darkturquoise;
-  min-width: 350px;
-  width: 30%;
-}
 
-.inputs{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.input{
-  display: flex;
-  flex-direction:row;
-  align-items: center;
-}
-
-.input_field{
-  height:40px;
-  width:200px;
-  margin:.5cm;
-  font-size: medium;
-}
-
-.submit_panel{
-  display: flex;
-  flex-direction:column;
-  margin-top: 5%;
-  margin-bottom: 5%;
-}
-
-.submit{
-  margin-left: 30%;
-  margin-right: 30%;
-  cursor: pointer;
-  font-size: large;
-  color: rgb(97, 64, 128);
+.register-container {
+  max-width: 450px;
+  margin: 50px auto;
+  padding: 30px;
+  background-color: #ffffff;
   border-radius: 10px;
-  height:50px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  text-align: center;
 }
 
-.submit:hover {
-  background-color: wheat;
+.register-container h2 {
+  margin-bottom: 25px;
+  color: #222222;
 }
 
-.header{
-  font: 4em sans-serif;
+.register-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.register-container input {
+  padding: 12px;
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.register-container button {
+  padding: 12px;
+  background-color: #007bff;
   color: white;
-  margin: .5cm;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
 }
 
-.img_icon{
-  width:40px;
-  margin:.1cm;
-  background-color:#0C9;
-  color:#FFF;
-  border-radius:50px;
-  text-align:center;
-  box-shadow: 2px 2px 3px #999;  
+.register-container button:hover {
+  background-color: #0056b3;
 }
