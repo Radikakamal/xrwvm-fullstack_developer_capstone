@@ -1,3 +1,4 @@
+import os
 # Uncomment the required imports before adding the code
 
 # from django.shortcuts import render
@@ -9,7 +10,7 @@
 # from datetime import datetime
 
 from django.http import JsonResponse
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 import logging
 import json
 from django.views.decorators.csrf import csrf_exempt
@@ -38,9 +39,10 @@ def login_user(request):
         data = {"userName": username, "status": "Authenticated"}
     return JsonResponse(data)
 
-# Create a `logout_request` view to handle sign out request
-# def logout_request(request):
-# ...
+@csrf_exempt
+def logout_request(request):
+    logout(request)
+    return JsonResponse({"status": "Logged out"})
 
 # Create a `registration` view to handle sign up request
 # @csrf_exempt
@@ -63,3 +65,21 @@ def login_user(request):
 # Create a `add_review` view to submit a review
 # def add_review(request):
 # ...
+
+# Task 8: Get reviews for a specific dealership
+def get_dealer_reviews(request, dealer_id):
+    try:
+        reviews_file = os.path.join(
+            os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+            "database", "data", "reviews.json"
+        )
+        with open(reviews_file, "r", encoding="utf-8") as file:
+            data = json.load(file)
+
+        reviews = [
+            review for review in data.get("reviews", [])
+            if str(review.get("dealership")) == str(dealer_id)
+        ]
+        return JsonResponse(reviews, safe=False)
+    except Exception as error:
+        return JsonResponse({"error": str(error)}, status=500)
