@@ -173,3 +173,66 @@ def get_car_make_and_models(request):
         return JsonResponse(result)
     except Exception as error:
         return JsonResponse({"error": str(error)}, status=500)
+
+
+# Task 22: Add a new dealership review
+@csrf_exempt
+def add_review(request):
+    if request.method != "POST":
+        return JsonResponse({"error": "POST method required"}, status=405)
+
+    try:
+        review_data = json.loads(request.body)
+
+        required_fields = [
+            "name", "dealership", "review", "purchase_date",
+            "car_make", "car_model", "car_year"
+        ]
+
+        for field in required_fields:
+            if not review_data.get(field):
+                return JsonResponse(
+                    {"error": f"Missing field: {field}"},
+                    status=400
+                )
+
+        reviews_file = os.path.join(
+            os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+            "database", "data", "reviews.json"
+        )
+
+        with open(reviews_file, "r", encoding="utf-8") as file:
+            data = json.load(file)
+
+        reviews = data.get("reviews", [])
+        new_id = max(
+            [int(item.get("id", 0)) for item in reviews],
+            default=0
+        ) + 1
+
+        new_review = {
+            "id": new_id,
+            "name": review_data["name"],
+            "dealership": int(review_data["dealership"]),
+            "review": review_data["review"].strip(),
+            "purchase": True,
+            "purchase_date": review_data["purchase_date"],
+            "car_make": review_data["car_make"],
+            "car_model": review_data["car_model"],
+            "car_year": int(review_data["car_year"])
+        }
+
+        reviews.append(new_review)
+        data["reviews"] = reviews
+
+        with open(reviews_file, "w", encoding="utf-8") as file:
+            json.dump(data, file, indent=4)
+
+        return JsonResponse({
+            "status": 200,
+            "message": "Review added successfully",
+            "review": new_review
+        })
+
+    except Exception as error:
+        return JsonResponse({"error": str(error)}, status=500)
