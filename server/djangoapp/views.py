@@ -109,3 +109,23 @@ def get_dealerships(request):
         return JsonResponse(data.get("dealerships", []), safe=False)
     except Exception as error:
         return JsonResponse({"error": str(error)}, status=500)
+
+# Task 10: Get dealership by ID
+def get_dealer_details(request, dealer_id):
+    try:
+        file_path = os.path.join(
+            os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+            "database", "data", "dealerships.json"
+        )
+        with open(file_path, "r", encoding="utf-8") as file:
+            data = json.load(file)
+        dealer = next(
+            (d for d in data.get("dealerships", [])
+             if str(d.get("id")) == str(dealer_id)),
+            None
+        )
+        if dealer is None:
+            return JsonResponse({"error": "Dealer not found"}, status=404)
+        return JsonResponse(dealer)
+    except Exception as error:
+        return JsonResponse({"error": str(error)}, status=500)
