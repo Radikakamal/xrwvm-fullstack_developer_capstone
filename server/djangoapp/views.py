@@ -148,3 +148,28 @@ def get_dealers_by_state(request, state):
         return JsonResponse(dealers, safe=False)
     except Exception as error:
         return JsonResponse({"error": str(error)}, status=500)
+
+# Tasks 14 and 15: Get all car makes and models
+def get_car_make_and_models(request):
+    try:
+        file_path = os.path.join(
+            os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+            "database", "data", "car_records.json"
+        )
+        with open(file_path, "r", encoding="utf-8") as file:
+            data = json.load(file)
+
+        cars = data.get("cars", [])
+        result = {}
+
+        for car in cars:
+            make = car.get("make")
+            model = car.get("model")
+            if make:
+                result.setdefault(make, [])
+                if model and model not in result[make]:
+                    result[make].append(model)
+
+        return JsonResponse(result)
+    except Exception as error:
+        return JsonResponse({"error": str(error)}, status=500)
