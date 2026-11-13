@@ -83,3 +83,29 @@ def get_dealer_reviews(request, dealer_id):
         return JsonResponse(reviews, safe=False)
     except Exception as error:
         return JsonResponse({"error": str(error)}, status=500)
+
+# Task 9: Get all dealerships
+def get_dealerships(request):
+    try:
+        file_path = os.path.join(
+            os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+            "database", "data", "dealerships.json"
+        )
+        with open(file_path, "r", encoding="utf-8") as file:
+            data = json.load(file)
+        return JsonResponse(data.get("dealerships", []), safe=False)
+    except Exception as error:
+        return JsonResponse({"error": str(error)}, status=500)
+
+# Task 9: Get all dealerships
+def get_dealerships(request):
+    try:
+        file_path = os.path.join(
+            os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+            "database", "data", "dealerships.json"
+        )
+        with open(file_path, "r", encoding="utf-8") as file:
+            data = json.load(file)
+        return JsonResponse(data.get("dealerships", []), safe=False)
+    except Exception as error:
+        return JsonResponse({"error": str(error)}, status=500)
